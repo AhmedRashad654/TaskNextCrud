@@ -38,10 +38,11 @@ export async function POST(request: NextRequest) {
     const cookie = generateToken({
       _id: user._id,
       email: user.email,
+      name: user.name,
     });
     // return response
     return NextResponse.json(
-      { message: "create user success", user },
+      { message: "create user success", data: user },
       {
         status: 201,
         headers: {

@@ -14,3 +14,16 @@ export const userSchemaLogin = z
     password: z.string().min(8),
   })
   .strict();
+
+export const todoSchemaCreate = z
+  .object({
+    title: z.string(),
+    description: z.string(),
+  })
+  .strict();
+
+export const todoSchemaUpdate = z.object({
+  title: z.string().optional(),
+  description: z.string().optional(),
+  isComplete: z.boolean().optional(),
+});
