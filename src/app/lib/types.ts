@@ -19,3 +19,17 @@ export interface IinformationUser {
   name: string;
   email: string;
 }
+
+export interface ICreateTodo {
+  title: string;
+  description: string;
+  isComplete: boolean;
+}
+
+export interface IinformationTodo {
+  _id: string;
+  title: string;
+  description: string;
+  userId: string;
+  isComplete: boolean;
+}

@@ -23,8 +23,10 @@ export async function GET(request: NextRequest) {
 
     // get user
     const findUser = await userModel.findById(userId).select("-password");
-    if (!findUser)
+    if (!findUser) {
       return NextResponse.json({ message: "user not found" }, { status: 404 });
+    }
+
     return NextResponse.json(
       { message: "fetch success", data: findUser },
       { status: 200 }

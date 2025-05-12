@@ -1,7 +1,6 @@
-import React from 'react'
+import React from "react";
+import TodoTable from "../_componant/TableTodo";
 
 export default function Dashboard() {
-  return (
-    <div>Dashboard</div>
-  )
+  return <TodoTable />;
 }

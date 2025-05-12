@@ -1,12 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { IuserRegister } from "../lib/types";
 import { UserRegister } from "@/services/userApi";
+import { useContextUser } from "@/context/ContextUser";
 export default function Register() {
   const router = useRouter();
+  const { user, setUser } = useContextUser();
   // navigate to page login
   const navigateLogin = () => {
     router.push("/login");
@@ -19,11 +21,18 @@ export default function Register() {
 
   // submit
   async function onSubmit(data: IuserRegister) {
-    const response = await UserRegister(data);
+    const response = await UserRegister(data, setUser);
     if (response === true) {
       router.replace("/dashboard");
     }
   }
+
+  // if user login
+  useEffect(() => {
+    if (user !== null && user?._id) {
+      router.replace("/dashboard");
+    }
+  }, [router, user]);
   return (
     <div className=" h-screen flex flex-col justify-center items-center gap-3">
       <h1 className="text-[1.5rem] text-blue-500 font-semibold">Register</h1>

@@ -10,6 +10,7 @@ export async function POST() {
   return NextResponse.json(
     { message: "logout success" },
     {
+      status: 200,
       headers: {
         "Set-Cookie": expireCookies,
       },

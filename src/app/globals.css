@@ -6,3 +6,30 @@
   --background: #ffffff;
   --foreground: #171717;
 }
+
+table {
+  width: 100%;
+  margin: auto;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+tr,
+td,
+th {
+  padding: 10px;
+  min-width: 150px;
+}
+
+.thDashboard {
+  background-color: #c5c1c1;
+  color: black;
+  text-align: start;
+  font-weight: 600;
+}
+
+
+.containerTableDashboard {
+  max-height: 70vh;
+  min-height: 70vh;
+  overflow-y: auto;
+}

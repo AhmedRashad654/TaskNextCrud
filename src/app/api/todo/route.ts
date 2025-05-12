@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
     });
     return NextResponse.json(
       { message: "fetch todo success", data: todos },
-      { status: 201 }
+      { status: 200 }
     );
   } catch {
     return NextResponse.json(

@@ -3,11 +3,15 @@ import axios, { AxiosError } from "axios";
 import { Dispatch, SetStateAction } from "react";
 
 // user register
-export const UserRegister = async (data: IuserRegister) => {
+export const UserRegister = async (
+  data: IuserRegister,
+  setUser: Dispatch<SetStateAction<IinformationUser | null>>
+) => {
   try {
     const response = await axios.post("/api/register", data);
     if (response?.status === 201) {
       alert(response?.data?.message);
+      setUser(response?.data?.data);
       return true;
     }
   } catch (error) {
@@ -36,6 +40,23 @@ export const UserLogin = async (
   }
 };
 
+// user logout
+export const UserLogout = async (
+  setUser: Dispatch<SetStateAction<IinformationUser | null>>
+) => {
+  try {
+    const response = await axios.post("/api/logout");
+    if (response?.status === 200) {
+      setUser(null);
+      return true;
+    }
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      alert(error?.response?.data?.message);
+    }
+  }
+};
+
 // fetch information user
 
 export const FetchInformationUser = async (
@@ -45,10 +66,9 @@ export const FetchInformationUser = async (
     const response = await axios.get("/api/me");
     if (response?.status === 200) {
       setUser(response?.data?.data);
+      return true;
     }
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      alert(error?.response?.data?.message);
-    }
+  } catch {
+    return false;
   }
 };

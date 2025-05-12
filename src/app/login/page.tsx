@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { IuserLogin } from "../lib/types";
@@ -8,7 +8,7 @@ import { UserLogin } from "@/services/userApi";
 import { useContextUser } from "@/context/ContextUser";
 export default function Login() {
   const router = useRouter();
-  const { setUser } = useContextUser();
+  const { user, setUser } = useContextUser();
   // navigate to page register
   const navigateRegister = () => {
     router.push("/register");
@@ -26,6 +26,12 @@ export default function Login() {
       router.replace("/dashboard");
     }
   }
+  // if user login
+  useEffect(() => {
+    if (user !== null && user?._id) {
+      router.replace("/dashboard");
+    }
+  }, [router, user]);
   return (
     <div className=" h-screen flex flex-col justify-center items-center gap-3">
       <h1 className="text-[1.5rem] text-blue-500 font-semibold">Login</h1>

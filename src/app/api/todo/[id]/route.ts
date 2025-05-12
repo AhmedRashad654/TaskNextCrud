@@ -49,7 +49,7 @@ export async function PUT(
     // update todo
     findTodo.title = body.title || findTodo.title;
     findTodo.description = body.description || findTodo.description;
-    findTodo.isComplete = body.isComplete || findTodo.isComplete;
+    findTodo.isComplete = body.isComplete;
     await findTodo.save();
     return NextResponse.json(
       { message: "update todo success", data: findTodo },

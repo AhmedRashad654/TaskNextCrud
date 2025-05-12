@@ -1,6 +1,6 @@
 "use client";
 import { IinformationUser } from "@/app/lib/types";
-import { FetchInformationUser } from "@/services/userApi";
+import { FetchInformationUser, UserLogout } from "@/services/userApi";
 import {
   createContext,
   Dispatch,
@@ -20,11 +20,14 @@ function ContextUserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<IinformationUser | null>(null);
   useEffect(() => {
     async function getInformationUser() {
-      await FetchInformationUser(setUser);
+      const response = await FetchInformationUser(setUser);
+      if (response === false) {
+        await UserLogout(setUser);
+      }
     }
     getInformationUser();
   }, []);
-  console.log(user);
+
   return (
     <ContextUser.Provider
       value={{
