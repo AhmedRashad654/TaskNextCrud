@@ -1,6 +1,6 @@
 import { generateToken } from "@/app/lib/generateToken";
 import dbConnect from "@/app/lib/mongoose";
-import { userSchemaRegister } from "@/app/lib/validation";
+import { userSchemaLogin } from "@/app/lib/validation";
 import userModel from "@/app/model/userModel";
 import bcrypt from "bcryptjs";
 
@@ -9,7 +9,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   // body
   const body = await request.json();
-  const validation = userSchemaRegister.safeParse(body);
+  const validation = userSchemaLogin.safeParse(body);
   // validation
   if (validation.error) {
     return NextResponse.json(
@@ -23,27 +23,31 @@ export async function POST(request: NextRequest) {
 
     // check email found
     const findEmail = await userModel.findOne({ email: body.email });
-    if (findEmail) {
+    if (!findEmail) {
       return NextResponse.json(
-        { message: "email already exist" },
-        { status: 400 }
+        { message: "error in email or password" },
+        { status: 404 }
       );
     }
-
-    // hash password
-    body.password = await bcrypt.hash(body.password, 10);
-    const user = await userModel.create(body);
-
+    // is Match password
+    const isMatch = await bcrypt.compare(body.password, findEmail.password);
+    if (!isMatch) {
+      return NextResponse.json(
+        { message: "error in email or password" },
+        { status: 404 }
+      );
+    }
     // store token in cookies
     const cookie = generateToken({
-      _id: user._id,
-      email: user.email,
+      _id: findEmail._id,
+      email: findEmail.email,
     });
+
     // return response
     return NextResponse.json(
-      { message: "create user success", user },
+      { message: "login user success", user: findEmail },
       {
-        status: 201,
+        status: 200,
         headers: {
           "Set-Cookie": cookie,
         },
